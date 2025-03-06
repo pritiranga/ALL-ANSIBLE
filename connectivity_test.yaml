@@ -1,0 +1,6 @@
+---
+- name: Ping all remote machines
+  hosts: all
+  tasks:
+    - name: Checking all remote machines connectivity
+      ping:

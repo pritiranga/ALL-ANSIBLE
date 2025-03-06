@@ -1,0 +1,25 @@
+---
+- name: Deploy a web application
+  hosts: all
+  become: true
+  tasks:
+  - name: Install nginx
+    apt:
+      name: nginx
+      state: present
+  - name: Start and enable nginx
+    service:
+      name: nginx
+      state: started
+      enabled: yes
+  - name: Deploy web application
+    copy:
+      content: <h1>DevOps Engineer at Cyemptive<h1>
+      dest: /var/www/html/index.html
+      owner: priti
+      group: devops
+      mode: 644
+  - name: Restart nginx
+    service:
+      name: nginx
+      state: restarted

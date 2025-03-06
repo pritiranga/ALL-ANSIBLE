@@ -1,0 +1,9 @@
+---
+- name: creating user
+  hosts: all
+  become: true
+  tasks:
+    - name: create user
+      user:
+        name: priti
+        group: devops
