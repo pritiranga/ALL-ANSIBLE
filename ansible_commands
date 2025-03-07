@@ -2,61 +2,61 @@
 $ ansible-playbook -m ping all
 
 # specify the inventory file location 
-ansible-playbook -i hosts -m ping all
+$ ansible-playbook -i hosts -m ping all
 
 # Reboot remote machines
-ansible all -m reboot --become
+$ ansible all -m reboot --become
 
 # Reboot machine with message
-ansible all -m reboot -a "msg='reboot is starting...'" --become
+$ ansible all -m reboot -a "msg='reboot is starting...'" --become
 
 # Sending notification to remote machine's logged-in users before Rebooting machine 
-ansible all -m shell -a "echo 'Reboot is starting in 1 minute...' | wall" --become
-ansible all -m reboot -a "pre_reboot_delay=60" --become
+$ ansible all -m shell -a "echo 'Reboot is starting in 1 minute...' | wall" --become
+$ ansible all -m reboot -a "pre_reboot_delay=60" --become
 
 # Creating an empty file
-ansible all -m file -a "path=/home/ubuntu/test.txt state=touch"
+$ ansible all -m file -a "path=/home/ubuntu/test.txt state=touch"
 
 # Creating a directory
-ansible all -m file -a "path=/home/ubuntu/test_folder state=directory"
+$ ansible all -m file -a "path=/home/ubuntu/test_folder state=directory"
 
 # Removing/ deleting file  
-ansible all -m file -a "path=/home/ubuntu/test.txt state=absent"
+$ ansible all -m file -a "path=/home/ubuntu/test.txt state=absent"
 
 # Creating symlink
-ansible all -m file -a "src=/home/ubuntu/old-package dest=/home/ubuntu/new-package state=link force=yes" --become
+$ ansible all -m file -a "src=/home/ubuntu/old-package dest=/home/ubuntu/new-package state=link force=yes" --become
 
 # Creating hard link
-ansible all -m file -a "src=/home/ubuntu/old-package dest=/home/ubuntu/new-package state=hard force=yes" --become
+$ ansible all -m file -a "src=/home/ubuntu/old-package dest=/home/ubuntu/new-package state=hard force=yes" --become
 
 # Installing package
-ansible all -m apt -a "name=nginx state=present" --become
+$ ansible all -m apt -a "name=nginx state=present" --become
 
 # command to change plain password to encrypted 
-openssl passwd -6
+$ openssl passwd -6
 
 # Creating user Joe
-ansible all -m user -a "name=Joe state=present" --become
+$ ansible all -m user -a "name=Joe state=present" --become
 
 # Assigning home directory to a user
-ansible all -m user -a "name=Joe home=/home/Joe state=present" --become
+$ ansible all -m user -a "name=Joe home=/home/Joe state=present" --become
 
 # Assigning permission to user
-ansible all -m user -a "name=Joe home=/home/Joe state=present mode=0644" --become
+$ ansible all -m user -a "name=Joe home=/home/Joe state=present mode=0644" --become
 
 # Creating group
-ansible all -m group -a "name=devops state=present" --become
+$ ansible all -m group -a "name=devops state=present" --become
 
 # Assigning user to a group
-ansible all -m user -a "name=Joe group=devops state=present" --become
+$ ansible all -m user -a "name=Joe group=devops state=present" --become
 
 # Restarting any service
-ansible all -m services -a "name=nginx state=restarted"
+$ ansible all -m services -a "name=nginx state=restarted"
 
 # Starting any service
-ansible all -m services -a "name=nginx state=started"
+$ ansible all -m services -a "name=nginx state=started"
 
 # Enabling any service
-ansible all -m services -a "name=nginx state=present enabled=yes"
+$ ansible all -m services -a "name=nginx state=present enabled=yes"
 
 
