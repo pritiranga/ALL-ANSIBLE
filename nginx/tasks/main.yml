@@ -1,0 +1,22 @@
+---
+# tasks file for nginx
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+- name: Start and enable nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+- name: Deploy web application
+  copy:
+    src: files/index.html
+    dest: /var/www/html/index.html
+    owner: priti
+    group: devops
+    mode: 644
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted

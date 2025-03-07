@@ -1,0 +1,6 @@
+---
+- name: first role
+  hosts: all
+  become: true
+  roles:
+    - nginx
