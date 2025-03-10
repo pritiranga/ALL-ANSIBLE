@@ -1,0 +1,25 @@
+---
+- name: Setup SSH Key Authentication for Jenkins
+  hosts: jenkins_master:jenkins_slave
+  become: true
+  roles:
+    - ssh_setup
+
+- name: Install Java on Master and Slave
+  hosts: jenkins_master:jenkins_slave
+  become: true
+  roles:
+    - java_installation
+
+- name: Install and Configure Jenkins Master
+  hosts: jenkins_master
+  become: true
+  roles:
+    - jenkins_master
+
+- name: Install and Configure Jenkins Slave
+  hosts: jenkins_slave
+  become: true
+  roles:
+    - jenkins_slave
+

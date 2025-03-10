@@ -1,0 +1,43 @@
+---
+# tasks file for ssh_setup
+- name: Ensure jenkins user exists
+  user:
+    name: jenkins
+    shell: /bin/bash
+    create_home: yes
+
+- name: Ensure jenkins owns .ssh directory
+  file:
+    path: /home/jenkins/.ssh
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0700
+
+- name: Set umask for Ansible temporary files
+  shell: "umask 022"
+  become: true
+
+- name: Generate ssh key-pair if not exists
+  shell: ssh-keygen -t rsa -b 4096 -f /home/jenkins/.ssh/id_rsa -N "" || true
+ # command: ssh-keygen -q -t rsa -f /home/jenkins/.ssh/id_rsa -C "jenkins" -N ""
+  args:
+    creates: /home/jenkins/.ssh/id_rsa
+  become: true
+  become_user: jenkins
+  become_flags: "-i"
+
+- name: Fetch ssh keys from jenkins master to ansible controller node
+  fetch:
+    src: /home/jenkins/.ssh/id_rsa.pub
+    dest: /tmp/jenkins_master_id_rsa.pub
+    flat: yes
+    validate_checksum: no
+
+- name: Copy ssh keys to jenkins slave
+  copy:
+    src: /tmp/jenkins_master_id_rsa.pub
+    dest: /home/jenkins/.ssh/authorized_keys
+    owner: jenkins
+    group: jenkins
+    mode: 0600

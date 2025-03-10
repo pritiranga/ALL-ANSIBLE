@@ -1,0 +1,16 @@
+---
+# tasks file for java_installation
+- name: Install java on ubuntu
+  apt:
+    name: openjdk-17-jdk
+    state: present
+    update_cache: yes
+
+- name: Verify java installation
+  command: java --version
+  register: java_output
+  changed_when: false
+
+- name: Display Java Version
+  debug:
+    msg: "{{java_output.stdout}}"
