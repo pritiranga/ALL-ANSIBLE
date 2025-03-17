@@ -32,3 +32,17 @@
     name: jenkins
     state: started
     enabled: yes
+
+#- name: Generate Jenkins initial password
+#  slurp:
+#    src: /var/lib/jenkins/secrets/initialAdminPassword
+#  register: jenkins_initial_passwd
+#  become: yes
+
+#- name: Jenkins initial password for login (only work for initial login)
+#  debug:
+#    msg: "{{ jenkins_initial_passwd ['content'] | b64decode }}"
+
+
+#- name: Add another yaml in the tasks of current role. Mentioned yaml file will be running after upper play execution.
+#  include_tasks: <yaml file>

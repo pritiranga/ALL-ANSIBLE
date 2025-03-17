@@ -26,18 +26,3 @@
   become: true
   become_user: jenkins
   become_flags: "-i"
-
-- name: Fetch ssh keys from jenkins master to ansible controller node
-  fetch:
-    src: /home/jenkins/.ssh/id_rsa.pub
-    dest: /tmp/jenkins_master_id_rsa.pub
-    flat: yes
-    validate_checksum: no
-
-- name: Copy ssh keys to jenkins slave
-  copy:
-    src: /tmp/jenkins_master_id_rsa.pub
-    dest: /home/jenkins/.ssh/authorized_keys
-    owner: jenkins
-    group: jenkins
-    mode: 0600

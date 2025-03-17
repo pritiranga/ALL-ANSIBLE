@@ -1,2 +1,9 @@
 ---
 # vars file for jenkins_master
+agent_name: "dev1"
+agent_description: "Jenkins slave node"
+remoteFS: "/home/jenkins"
+numExecutors: 2
+agent_label: "ubuntu_slave"
+mode: NORMAL
+jenkins_api_token: "<api-token>"
