@@ -1,0 +1,128 @@
+#Modules in ansible
+
+uri -->
+- Used to interact with REST APIs or web services over HTTP, HTTPS or FTP.
+- It allows you to send HTTP/HTTPS requests (like GET, POST, PUT, DELETE, HEAD, etc.) and handle responses directly within an Ansible playbook.
+- Use Cases:
+  - Testing the availability of a web service
+  - Download file from a URL
+  - Sending data to a REST API (e.g., JSON payloads)
+- Example:
+  - name: Download a file
+    ansible.builtin.uri:
+      url: "https://example.com/file.zip"
+      dest: "/tmp/file.zip"
+      method: GET
+      return_content: no
+
+
+fail -->
+- Intentially stop the ansible playbook execution and mark it as failed, if given condition is met.
+- Example:
+  - name: Fail if the config file is missing
+    ansible.builtin.fail:
+      msg: "The config file is missing!"
+    when: not lookup('file', '/etc/app/config.yml')
+
+
+copy -->
+- Copies a file or a directory structure from the local or remote machine to a location on the remote machine.
+- Syntax:
+  - name: Copy a file to the target node
+    ansible.builtin.copy:
+      src: /path/to/source/file
+      dest: /path/to/destination/file
+
+
+shell -->
+- When you need to execute complex shell commands.
+- When piping (|) or redirection (>, >>) is required.
+- When command chaining (&&, ;, ||) is needed.
+- Syntax:
+  - name: Run a shell command
+    ansible.builtin.shell: "<command>"
+
+
+file -->
+- Managing files and directories
+- Create, delete, or modify files and directories
+- Change file permissions, ownership, and timestamps
+- Create symbolic links
+- Syntax:
+  - name: Example using file module
+    ansible.builtin.file:
+      path: /path/to/file_or_directory
+      state: <file|directory|absent|link>
+      mode: '0755'
+      owner: root
+      group: root
+- state: file vs state: touch 
+  state: file -> Ensures that a file is exists. Create if not exists.
+  state: touch -> Ensures that a file is exists, create if not exists and update its timestamp.
+
+
+get_url -->
+- Download files from a url and saved to a location on remote machine.
+- Syntax:
+  - name: Download a file using get_url
+    ansible.builtin.get_url:
+      url: "<URL>"
+      dest: "<destination_path>"
+      mode: "<permissions>"
+      owner: "<owner>"
+      group: "<group>"
+
+
+replace -->
+- Search for a pattern in a file and replace with specified string.
+- Syntax:
+  - name: Replace text in a file
+    ansible.builtin.replace:
+      path: "<file_path>"
+      regexp: "<pattern_to_match>"
+      replace: "<replacement_string>"
+- if want to search for a pattern in multiple files and replace the specified string.
+- Syntax:
+  - name: Replace text in multiple files 
+    ansible.builtin.replace:
+      path: "{{ item }}"
+      regexp: "<pattern_to_match>"
+      replace: "<replacement_string>"
+    with_items: 
+      - <file1_path>
+      - <file2_path>
+
+
+command -->
+- Executing any command on remote machine as like you executing command on terminal but without loading shell environment.
+- Syntax:
+  - name: run a command
+    ansible.builtin.command: "<command>"
+
+
+package -->
+- This module is an abstraction layer over all package managers like yum, apt, dnf, etc. we can just use this module even if we have different linux distributions.
+- Syntax:
+  - name: Install a package
+    ansible.builtin.package:
+      name: <package_name>
+      state: present
+
+
+service -->
+- Manages services on remote machine for general tasks.
+- Syntax:
+  - name: Manage a service
+    ansible.builtin.service:
+      name: <service_name>
+      state: <state>  #state: started/stopped/restarted/reloaded 
+      enabled: <yes/no>  # if we want to start on boot or not
+        
+
+systemd -->
+- Similar to the service module but specifically designed for systemd-based systems, providing more granular control over systemd features like drop-in files, masking, and daemon reload.
+- Example:
+  - name: Reload systemd configuration
+    ansible.builtin.systemd:
+      daemon_reload: yes
+
