@@ -126,3 +126,80 @@ systemd -->
     ansible.builtin.systemd:
       daemon_reload: yes
 
+
+lineinfile -->
+- Add a line to a file if it’s not already present.
+- Modify an existing line in a file.
+- Ensure a line is present or absent in a file.
+- Syntax:
+  - name: Update or add a line in a file
+    ansible.builtin.lineinfile:
+      path: <file_path>
+      line: "<line_to_add>"
+      state: present/absent
+
+
+set_fact -->
+- Store temporary values
+- Calculate values dynamically during playbook execution.
+- Facts set with set_fact are available only within the playbook.
+- If you need facts across playbooks, use registered variables or gather facts.
+- Example:
+  - name: Set a calculated fact
+    ansible.builtin.set_fact:
+      sum: "{{ 5 + 3 }}"
+
+  - name: Display the calculated fact
+    ansible.builtin.debug:
+      msg: "Sum is {{ sum }}"
+
+
+unarchive -->
+- Extract archive files (like .zip, .tar, .gz, .bz2).
+- Extract files on local or remote machines.
+- Supports both local paths and URLs.
+- Syntax:
+  - name: Extract archive
+    ansible.builtin.unarchive:
+      src: /path/to/file.tar.gz
+      dest: /path/to/destination/
+      remote_src: yes/no     # if archive is already on the target machine then set remote_src to yes otherwise to no. 
+
+
+template -->
+- Create or update configuration files dynamically.
+- Use Jinja2 templates to replace placeholders ({{ }}) with actual values from Ansible variables.
+- Define a template file (.j2) with placeholders for dynamic values.
+- The template module processes these templates and creates the final file on the target system.
+- Store templates in a templates/ directory within your playbook.
+- Example:
+  Create a Jinja2 template file named with nginx.conf.j2:
+  
+  server {
+    listen {{ http_port }};
+    server_name {{ server_name }};
+  }
+  
+  We can use the template module to create a real nginx.conf file:
+  - name: Create NGINX config file
+    ansible.builtin.template:
+      src: nginx.conf.j2
+      dest: /etc/nginx/nginx.conf
+      owner: root
+      group: root
+      mode: "0644"
+    vars:
+      http_port: 80
+      server_name: example.com
+
+
+pause -->
+- When we want to pause playbook execution for a specified amount of time or until a user input is received.
+- Example1:
+  - name: Pause for 10 seconds
+    ansible.builtin.pause:
+      seconds: 10
+- Example2:
+  - name: Wait for user confirmation
+    ansible.builtin.pause:
+      prompt: "Press ENTER to continue"
